@@ -1,4 +1,4 @@
-# Bankability Assessment — Kano Agro-Industrial Solar-plus-Storage Project (Sample)
+# Bankability Assessment - Kano Agro-Industrial Solar-plus-Storage Project (Sample)
 
 A bankability assessment of a 5.0 MWp solar PV plant with 4.0 MWh battery storage,
 supplying a commercial and industrial offtaker in Kano State under a 15-year US
@@ -15,7 +15,7 @@ deliverable.
 
 ## Contents
 
-- **`CE_Sample_Bankability_Report.pdf`** — The published assessment. Executive
+- **`CE_Sample_Bankability_Report.pdf`** - The published assessment. Executive
   summary, capital structure, financial analysis, sensitivity envelope, risk
   assessment, and bankability conclusion with recommended conditions precedent.
 
