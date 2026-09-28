@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Illustrative Project Finance Model - Summary Dashboard</title>
+<meta name="description" content="Kano Agro-Industrial Solar-plus-Storage - 5.0 MWp PV + 4.0 MWh storage under a 15-year commercial and industrial PPA. Prepared by CircularEnergies as an illustrative sample.">
+<style>
+:root {
+  --brand-primary:  #1F5C3A;
+  --brand-accent:   #35855A;
+  --surface-1:      #fcfcfb;
+  --surface-2:      #f4f4f0;
+  --text-primary:   #1a1a19;
+  --text-secondary: #4a4a48;
+  --text-muted:     #7a7a78;
+  --border:         #d8d8d2;
+  --grid:           #ebebe6;
+  --series-1:       #2a78d6;
+  --series-1-soft:  #cde2fb;
+  --series-2:       #eb6834;
+  --series-2-soft:  #fbd5c2;
+  --good:           #0ca30c;
+  --critical:       #d03b3b;
+  --warn:           #fab219;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    --brand-primary:  #2A9E5F;
+    --brand-accent:   #35855A;
+    --surface-1:      #1a1a19;
+    --surface-2:      #262624;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #8a8a83;
+    --border:         #38382e;
+    --grid:           #2e2e28;
+    --series-1:       #3987e5;
+    --series-1-soft:  #184f95;
+    --series-2:       #d95926;
+    --series-2-soft:  #7a3116;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --brand-primary:  #2A9E5F;
+  --brand-accent:   #35855A;
+  --surface-1:      #1a1a19;
+  --surface-2:      #262624;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #8a8a83;
+  --border:         #38382e;
+  --grid:           #2e2e28;
+  --series-1:       #3987e5;
+  --series-1-soft:  #184f95;
+  --series-2:       #d95926;
+  --series-2-soft:  #7a3116;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--surface-1);
+  color: var(--text-primary);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* -------------------- header -------------------- */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--brand-primary);
+  margin-bottom: 28px;
+}
+.brand-mark {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--brand-primary);
+  letter-spacing: 0.02em;
+}
+.masthead h1 {
+  margin: 6px 0 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.masthead-right {
+  text-align: right;
+  min-width: 200px;
+}
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--series-2);
+  border: 1px solid var(--series-2);
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+.tag-note {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.theme-toggle {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font: 11px/1 inherit;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.theme-toggle:hover { color: var(--text-primary); border-color: var(--text-secondary); }
+
+/* -------------------- project banner -------------------- */
+.project {
+  margin-bottom: 24px;
+}
+.project h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  letter-spacing: -0.01em;
+}
+.project p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* -------------------- KPI row -------------------- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.kpi {
+  background: var(--brand-primary);
+  color: #ffffff;
+  padding: 16px 18px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  min-height: 108px;
+  justify-content: space-between;
+}
+.kpi:nth-child(2), .kpi:nth-child(4) {
+  background: var(--brand-accent);
+}
+.kpi-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+.kpi-value {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.kpi-note {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  font-style: italic;
+}
+
+/* -------------------- section headings -------------------- */
+h3.section {
+  margin: 0 0 12px;
+  padding: 6px 12px;
+  background: var(--brand-primary);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  border-radius: 3px;
+}
+
+/* -------------------- two-column zone -------------------- */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 32px;
+}
+
+/* capital structure */
+.cap-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+.cap-table td, .cap-table th {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.cap-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cap-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cap-table tr.total td {
+  font-weight: 700;
+  border-bottom: 2px solid var(--text-primary);
+  border-top: 1px solid var(--border);
+}
+.cap-swatch {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 2px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* horizontal stacked bar for capital structure */
+.cap-bar {
+  display: flex;
+  height: 32px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+  background: var(--surface-2);
+  gap: 2px;              /* 2px spacer between segments — dataviz mark spec */
+}
+.cap-bar .seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 0;
+}
+.cap-bar .seg.debt { background: var(--series-1); }
+.cap-bar .seg.equity { background: var(--series-2); }
+
+/* key metrics list */
+.metrics {
+  width: 100%;
+  border-collapse: collapse;
+}
+.metrics tr:nth-child(odd) { background: var(--surface-2); }
+.metrics td {
+  padding: 6px 10px;
+  font-size: 13px;
+  border-bottom: 1px solid transparent;
+}
+.metrics td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.metrics td.label { color: var(--text-secondary); }
+
+/* -------------------- charts -------------------- */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-bottom: 32px;
+}
+.chart-card {
+  min-width: 0;
+}
+.chart-legend {
+  display: flex;
+  gap: 18px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
+.chart-caption {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-swatch {
+  width: 20px; height: 2px; border-radius: 1px;
+}
+
+/* chart svg */
+svg.chart {
+  width: 100%;
+  height: 260px;
+  overflow: visible;
+  font: 11px/1 inherit;
+}
+svg.chart .grid line { stroke: var(--grid); stroke-width: 1; }
+svg.chart .axis text { fill: var(--text-muted); font-size: 10px; }
+svg.chart .axis-label {
+  fill: var(--text-secondary); font-size: 10px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+svg.chart path.line-s1 { fill: none; stroke: var(--series-1); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg.chart path.line-s2 { fill: none; stroke: var(--series-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg.chart circle.pt-s1 { fill: var(--series-1); }
+svg.chart circle.pt-s2 { fill: var(--series-2); }
+svg.chart .cursor { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 3 3; display: none; pointer-events: none; }
+svg.chart .cursor.on { display: block; }
+svg.chart .hover-dot { r: 4; stroke: var(--surface-1); stroke-width: 2; pointer-events: none; visibility: hidden; }
+svg.chart .hover-dot.on { visibility: visible; }
+svg.chart .cov-line { stroke: var(--critical); stroke-width: 1; stroke-dasharray: 4 3; }
+svg.chart .cov-label { fill: var(--critical); font-size: 10px; font-weight: 600; }
+
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--text-primary);
+  color: var(--surface-1);
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  min-width: 140px;
+  opacity: 0;
+  transition: opacity 100ms;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.tooltip.on { opacity: 1; }
+.tooltip .t-title {
+  font-weight: 700;
+  font-size: 11px;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+  color: var(--surface-2);
+}
+.tooltip .t-row {
+  display: flex; justify-content: space-between; gap: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.tooltip .t-swatch {
+  display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px;
+}
+
+/* -------------------- sensitivity table -------------------- */
+.sens-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 32px;
+}
+.sens-table th, .sens-table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.sens-table th {
+  background: var(--brand-accent);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sens-table td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.sens-table tr:nth-child(even) td { background: var(--surface-2); }
+.sens-table tr.base td { font-weight: 700; }
+.dscr-bar {
+  position: relative;
+  height: 10px;
+  background: var(--surface-2);
+  border-radius: 2px;
+  width: 120px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.dscr-bar-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  background: var(--series-1);
+  border-radius: 2px;
+}
+.dscr-bar-cov {
+  position: absolute;
+  top: -2px; bottom: -2px;
+  width: 2px;
+  background: var(--critical);
+}
+.verdict {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.verdict.good { background: rgba(12,163,12,0.12); color: var(--good); }
+.verdict.warn { background: rgba(250,178,25,0.15); color: #b57c00; }
+.verdict.critical { background: rgba(208,59,59,0.12); color: var(--critical); }
+
+/* -------------------- central finding -------------------- */
+.finding {
+  background: var(--surface-2);
+  border-left: 4px solid var(--brand-primary);
+  padding: 20px 24px;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 32px;
+}
+.finding h3 {
+  margin: 0 0 8px;
+  color: var(--brand-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.finding p { margin: 0 0 12px; color: var(--text-primary); }
+.finding p.pull {
+  font-weight: 700;
+  color: var(--brand-primary);
+  font-size: 15px;
+  margin-bottom: 0;
+}
+
+/* -------------------- footer -------------------- */
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+footer a { color: var(--brand-primary); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* -------------------- responsive -------------------- */
+@media (max-width: 800px) {
+  .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .split, .chart-grid { grid-template-columns: 1fr; }
+  .masthead h1 { font-size: 20px; }
+  .kpi-value { font-size: 30px; }
+  main { padding: 20px 16px 48px; }
+}
+
+/* -------------------- print -------------------- */
+@media print {
+  main { max-width: none; padding: 12mm; }
+  .theme-toggle { display: none; }
+  .kpi { break-inside: avoid; }
+  .chart-grid, .split { break-inside: avoid; }
+  .finding { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<header class="masthead">
+  <div>
+    <div class="brand-mark">CircularEnergies</div>
+    <h1>Illustrative Project Finance Model · Summary Dashboard</h1>
+  </div>
+  <div class="masthead-right">
+    <span class="tag">SAMPLE</span>
+    <span class="tag-note">Not a live client engagement</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle colour theme">Toggle theme</button>
+  </div>
+</header>
+
+<section class="project">
+  <h2>Kano Agro-Industrial Solar-plus-Storage Project</h2>
+  <p>5.0 MWp solar PV + 4.0 MWh battery storage · 15-year commercial &amp; industrial PPA, USD-indexed · Kano State, Nigeria</p>
+</section>
+
+<section class="kpi-row" aria-label="Headline metrics">
+  <div class="kpi">
+    <div class="kpi-label">Project IRR</div>
+    <div class="kpi-value">15.2%</div>
+    <div class="kpi-note">Post-tax, USD, 20-year hold</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Equity IRR</div>
+    <div class="kpi-value">19.9%</div>
+    <div class="kpi-note">Hurdle 18.0%</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Minimum DSCR</div>
+    <div class="kpi-value">1.50x</div>
+    <div class="kpi-note">Covenant 1.30x</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">LLCR at close</div>
+    <div class="kpi-value">2.17x</div>
+    <div class="kpi-note">Loan life coverage ratio</div>
+  </div>
+</section>
+
+<div class="split">
+  <section>
+    <h3 class="section">Capital structure</h3>
+    <table class="cap-table" aria-label="Capital structure">
+      <thead>
+        <tr><th>Source</th><th style="text-align:right">Amount (USD)</th><th style="text-align:right">Share</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="cap-swatch" style="background:var(--series-1)"></span>Senior debt</td>
+          <td class="num">$3,679,830</td>
+          <td class="num">60.5%</td>
+        </tr>
+        <tr>
+          <td><span class="cap-swatch" style="background:var(--series-2)"></span>Sponsor equity</td>
+          <td class="num">$2,406,085</td>
+          <td class="num">39.5%</td>
+        </tr>
+        <tr class="total">
+          <td>Total funding</td>
+          <td class="num">$6,085,915</td>
+          <td class="num">100.0%</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="cap-bar" aria-hidden="true">
+      <div class="seg debt" style="flex: 60.5">60.5%</div>
+      <div class="seg equity" style="flex: 39.5">39.5%</div>
+    </div>
+  </section>
+
+  <section>
+    <h3 class="section">Key financial metrics</h3>
+    <table class="metrics" aria-label="Financial metrics">
+      <tbody>
+        <tr><td class="label">Year 1 revenue</td><td class="num">$1,193,767</td></tr>
+        <tr><td class="label">Year 1 EBITDA</td><td class="num">$1,013,402</td></tr>
+        <tr><td class="label">Year 1 EBITDA margin</td><td class="num">84.9%</td></tr>
+        <tr><td class="label">Installed cost per Wp</td><td class="num">$1.12 / Wp</td></tr>
+        <tr><td class="label">Effective gearing</td><td class="num">60.5%</td></tr>
+        <tr><td class="label">Average DSCR</td><td class="num">1.81x</td></tr>
+        <tr><td class="label">Equity NPV at hurdle</td><td class="num">$220,586</td></tr>
+        <tr><td class="label">PPA tariff (Year 1)</td><td class="num">$145 / MWh</td></tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<div class="chart-grid">
+  <section class="chart-card">
+    <h3 class="section">Revenue &amp; EBITDA profile</h3>
+    <div style="position:relative">
+      <svg class="chart" id="revChart" viewBox="0 0 640 260" role="img" aria-label="Revenue and EBITDA over 20 years"></svg>
+      <div class="tooltip" id="revTip"></div>
+    </div>
+    <div class="chart-legend">
+      <span class="legend-item"><span class="legend-swatch" style="background:var(--series-1)"></span>Revenue</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:var(--series-2)"></span>EBITDA</span>
+    </div>
+  </section>
+
+  <section class="chart-card">
+    <h3 class="section">Debt service coverage (debt life)</h3>
+    <div style="position:relative">
+      <svg class="chart" id="dscrChart" viewBox="0 0 640 260" role="img" aria-label="DSCR and LLCR over the 14-year debt life"></svg>
+      <div class="tooltip" id="dscrTip"></div>
+    </div>
+    <div class="chart-legend">
+      <span class="legend-item"><span class="legend-swatch" style="background:var(--series-1)"></span>DSCR</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:var(--series-2)"></span>LLCR</span>
+      <span class="legend-item"><span class="legend-swatch" style="background:var(--critical);height:2px"></span>Covenant 1.30x</span>
+    </div>
+    <p class="chart-caption">LLCR values above 4.0x are clipped at the axis. As the loan approaches maturity the remaining balance is small and LLCR rises steeply - hover for exact values.</p>
+  </section>
+</div>
+
+<section>
+  <h3 class="section">Sensitivity · minimum DSCR and equity IRR across downside cases</h3>
+  <table class="sens-table" aria-label="Downside scenario summary">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th style="text-align:right">Min DSCR</th>
+        <th>vs 1.30x</th>
+        <th style="text-align:right">Equity IRR</th>
+        <th style="text-align:right">vs 18.0%</th>
+        <th>Verdict</th>
+      </tr>
+    </thead>
+    <tbody id="sensBody"></tbody>
+  </table>
+</section>
+
+<section class="finding">
+  <h3>Central finding</h3>
+  <p>The capital structure protects the lender before it protects the sponsor. Debt coverage holds above covenant in every downside tested - including the combined stress - while equity returns fall below hurdle in two of the four downsides. Tariff is the binding commercial variable: a 10% tariff reduction costs five points of equity IRR, against 2.4 points for a 7% generation shortfall and 1.7 points for a 20% operating cost overrun.</p>
+  <p class="pull">Coverage headroom is not equity headroom.</p>
+</section>
+
+<footer>
+  <p>Prepared by <strong>CircularEnergies Ltd</strong>, Abuja · Illustrative sample · Hypothetical project, hypothetical offtaker, illustrative assumptions.</p>
+  <p><a href="mailto:info@circularenergies.africa">info@circularenergies.africa</a> · <a href="https://circularenergies.africa">circularenergies.africa</a></p>
+</footer>
+
+</main>
+
+<script>
+// ---------- data ----------
+const revData = {
+  years: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+  revenue: [1193767,1210945,1228371,1246047,1263978,1282166,1300617,1319332,1338318,1357576,1377112,1396928,1417030,1437421,1463632,1492904,1522763,1553218,1584282,1615968],
+  ebitda:  [1013402,1024267,1035159,1046073,1057004,1067949,1078902,1089857,1100811,1111757,1122689,1133600,1144486,1155338,1171676,1190730,1210012,1229521,1249256,1269215],
+};
+const dscrData = {
+  years: [1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+  dscr: [2.199,2.199,2.199,2.199,2.199,1.664,1.649,1.633,1.615,1.596,1.575,1.553,1.528,1.502],
+  llcr: [2.169,2.165,2.160,2.155,2.148,2.140,2.224,2.336,2.490,2.711,3.051,3.629,4.800,8.350],
+};
+const sensRows = [
+  {scenario:"Base case",            minDscr:1.502, equityIrr:0.1991, isBase:true},
+  {scenario:"Tariff −10%",          minDscr:1.319, equityIrr:0.1487},
+  {scenario:"Generation P90 (−7%)", minDscr:1.499, equityIrr:0.1747},
+  {scenario:"Opex +20%",            minDscr:1.430, equityIrr:0.1823},
+  {scenario:"Combined downside",    minDscr:1.371, equityIrr:0.1437},
+];
+
+// ---------- helpers ----------
+const fmtUSD = v => "$" + Math.round(v).toLocaleString();
+const fmtX = v => v.toFixed(2) + "x";
+const fmtPct = v => (v*100).toFixed(1) + "%";
+const fmtPctSigned = v => (v>=0?"+":"") + (v*100).toFixed(1) + "%";
+const fmtXSigned = v => (v>=0?"+":"") + v.toFixed(2) + "x";
+
+// ---------- render sensitivity table ----------
+function renderSens() {
+  const covenant = 1.30, hurdle = 0.18;
+  const maxDscr = 2.2;   // scale cap so bars stay readable
+  const covPct = (covenant / maxDscr) * 100;
+  const tbody = document.getElementById("sensBody");
+  tbody.innerHTML = sensRows.map(row => {
+    const dscrPct = Math.min(100, (row.minDscr / maxDscr) * 100);
+    const dscrDelta = row.minDscr - covenant;
+    const irrDelta = row.equityIrr - hurdle;
+    const dscrOk = row.minDscr >= covenant;
+    const irrOk = row.equityIrr >= hurdle;
+    const verdictClass = !dscrOk ? "critical" : (!irrOk ? "warn" : "good");
+    const verdictText = !dscrOk ? "DSCR breach" : (!irrOk ? "Below hurdle" : "Above hurdle");
+    return `
+      <tr class="${row.isBase ? 'base' : ''}">
+        <td>${row.scenario}</td>
+        <td class="num">${fmtX(row.minDscr)}</td>
+        <td>
+          <span class="dscr-bar" title="Covenant 1.30x">
+            <span class="dscr-bar-fill" style="width:${dscrPct}%"></span>
+            <span class="dscr-bar-cov" style="left:${covPct}%"></span>
+          </span>
+          ${fmtXSigned(dscrDelta)}
+        </td>
+        <td class="num">${fmtPct(row.equityIrr)}</td>
+        <td class="num" style="color:${irrOk ? 'var(--good)' : 'var(--critical)'}">${fmtPctSigned(irrDelta)}</td>
+        <td><span class="verdict ${verdictClass}">${verdictText}</span></td>
+      </tr>`;
+  }).join("");
+}
+
+// ---------- chart drawing ----------
+const M = { top: 16, right: 20, bottom: 36, left: 60 };
+const W = 640, H = 260;
+const PW = W - M.left - M.right;
+const PH = H - M.top - M.bottom;
+
+function niceMax(v) {
+  const e = Math.pow(10, Math.floor(Math.log10(v)));
+  const n = v / e;
+  const steps = [1, 1.5, 2, 2.5, 3, 4, 5, 7.5, 10];
+  for (const s of steps) if (n <= s) return s * e;
+  return 10 * e;
+}
+function ticks(min, max, n) {
+  const step = (max - min) / n;
+  return Array.from({length: n + 1}, (_, i) => min + step * i);
+}
+
+function drawLineChart(svgId, xs, seriesArr, opts) {
+  const svg = document.getElementById(svgId);
+  const yMin = opts.yMin ?? 0;
+  const yMaxRaw = Math.max(...seriesArr.flatMap(s => s.values));
+  const yMax = opts.yMax ?? niceMax(yMaxRaw);
+
+  const xScale = x => M.left + (x - xs[0]) / (xs[xs.length-1] - xs[0]) * PW;
+  const yScale = y => M.top + PH - (y - yMin) / (yMax - yMin) * PH;
+
+  const yTicks = ticks(yMin, yMax, opts.yTickCount ?? 5);
+  const gridLines = yTicks.map(t =>
+    `<line x1="${M.left}" x2="${M.left + PW}" y1="${yScale(t)}" y2="${yScale(t)}"/>`
+  ).join("");
+  const yLabels = yTicks.map(t =>
+    `<text x="${M.left - 8}" y="${yScale(t) + 3}" text-anchor="end">${opts.yFmt(t)}</text>`
+  ).join("");
+  const xEvery = xs.length > 12 ? Math.ceil(xs.length / 10) : 1;
+  const xLabels = xs.map((x, i) => (i % xEvery === 0 || i === xs.length - 1)
+    ? `<text x="${xScale(x)}" y="${M.top + PH + 16}" text-anchor="middle">Yr ${x}</text>` : ""
+  ).join("");
+
+  // Clip line paths at the axis max so a runaway value doesn't shoot off-canvas
+  const paths = seriesArr.map((s, i) => {
+    const d = s.values.map((v, j) => {
+      const clipped = Math.min(v, yMax);
+      return (j === 0 ? "M" : "L") + xScale(xs[j]) + "," + yScale(clipped);
+    }).join(" ");
+    return `<path class="line-s${i+1}" d="${d}"/>`;
+  }).join("");
+
+  const covLine = opts.covenant !== undefined
+    ? `<line class="cov-line" x1="${M.left}" x2="${M.left + PW}" y1="${yScale(opts.covenant)}" y2="${yScale(opts.covenant)}"/>
+       <text class="cov-label" x="${M.left + PW - 4}" y="${yScale(opts.covenant) - 4}" text-anchor="end">Covenant ${fmtX(opts.covenant)}</text>`
+    : "";
+
+  const cursorX = `<line class="cursor" id="${svgId}-cur" x1="0" x2="0" y1="${M.top}" y2="${M.top + PH}"/>`;
+  const hoverDots = seriesArr.map((_, i) =>
+    `<circle class="hover-dot" id="${svgId}-h${i+1}" cx="-99" cy="-99" fill="var(--series-${i+1})"/>`
+  ).join("");
+
+  svg.innerHTML = `
+    <g class="grid">${gridLines}</g>
+    <g class="axis">${yLabels}${xLabels}</g>
+    <text class="axis-label" x="${M.left}" y="${M.top - 4}" text-anchor="start">${opts.yUnit ?? ""}</text>
+    ${covLine}
+    ${paths}
+    ${cursorX}
+    ${hoverDots}
+    <rect x="${M.left}" y="${M.top}" width="${PW}" height="${PH}" fill="transparent" id="${svgId}-hit"/>
+  `;
+
+  // hover interaction
+  const hit = document.getElementById(svgId + "-hit");
+  const cur = document.getElementById(svgId + "-cur");
+  const tip = document.getElementById(opts.tipId);
+  const dots = seriesArr.map((_, i) => document.getElementById(`${svgId}-h${i+1}`));
+
+  hit.addEventListener("mousemove", e => {
+    const rect = svg.getBoundingClientRect();
+    // convert to SVG viewBox coords
+    const px = (e.clientX - rect.left) * (W / rect.width);
+    // find nearest x
+    let best = 0, bestD = Infinity;
+    xs.forEach((x, i) => {
+      const d = Math.abs(xScale(x) - px);
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    const cx = xScale(xs[best]);
+    cur.setAttribute("x1", cx);
+    cur.setAttribute("x2", cx);
+    cur.classList.add("on");
+    seriesArr.forEach((s, i) => {
+      const clipped = Math.min(s.values[best], yMax);
+      dots[i].setAttribute("cx", cx);
+      dots[i].setAttribute("cy", yScale(clipped));
+      dots[i].classList.add("on");
+    });
+    // tooltip
+    const rows = seriesArr.map((s, i) =>
+      `<div class="t-row"><span><span class="t-swatch" style="background:var(--series-${i+1})"></span>${s.name}</span><span>${opts.tipFmt(s.values[best])}</span></div>`
+    ).join("");
+    tip.innerHTML = `<div class="t-title">Year ${xs[best]}</div>${rows}`;
+    // position tooltip
+    const container = svg.parentElement;
+    const conRect = container.getBoundingClientRect();
+    const relX = e.clientX - conRect.left;
+    const relY = e.clientY - conRect.top;
+    let tx = relX + 14, ty = relY + 12;
+    tip.style.left = tx + "px";
+    tip.style.top = ty + "px";
+    tip.classList.add("on");
+    // if tooltip would overflow right edge, flip left
+    requestAnimationFrame(() => {
+      const tRect = tip.getBoundingClientRect();
+      if (tRect.right > conRect.right) tip.style.left = (relX - tRect.width - 14) + "px";
+    });
+  });
+  hit.addEventListener("mouseleave", () => {
+    cur.classList.remove("on");
+    tip.classList.remove("on");
+    dots.forEach(d => d.classList.remove("on"));
+  });
+}
+
+// ---------- boot ----------
+function boot() {
+  renderSens();
+
+  drawLineChart("revChart", revData.years, [
+    { name: "Revenue", values: revData.revenue },
+    { name: "EBITDA",  values: revData.ebitda },
+  ], {
+    yFmt: v => "$" + (v/1000).toFixed(0) + "k",
+    yUnit: "USD",
+    yTickCount: 5,
+    tipId: "revTip",
+    tipFmt: v => fmtUSD(v),
+  });
+
+  drawLineChart("dscrChart", dscrData.years, [
+    { name: "DSCR", values: dscrData.dscr },
+    { name: "LLCR", values: dscrData.llcr },
+  ], {
+    yMin: 1.0,
+    yMax: 4.0,
+    yFmt: v => v.toFixed(2) + "x",
+    yUnit: "coverage",
+    yTickCount: 6,
+    covenant: 1.30,
+    tipId: "dscrTip",
+    tipFmt: v => fmtX(v),
+  });
+}
+document.addEventListener("DOMContentLoaded", boot);
+
+// theme toggle
+document.getElementById("themeToggle").addEventListener("click", () => {
+  const root = document.documentElement;
+  const cur = root.getAttribute("data-theme");
+  if (cur === "dark") {
+    root.setAttribute("data-theme", "light");
+  } else if (cur === "light") {
+    root.removeAttribute("data-theme");
+  } else {
+    root.setAttribute("data-theme", "dark");
+  }
+});
+</script>
+</body>
+</html>
